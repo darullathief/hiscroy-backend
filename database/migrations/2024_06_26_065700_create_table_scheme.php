@@ -17,7 +17,7 @@ return new class extends Migration
             $table->text('description');
             $table->string('location');
             $table->date('date_start');
-            $table->date('date_finish');
+            $table->date('date_finish')->nullable();
             $table->timestamps();
         });
         Schema::create('series', function (Blueprint $table) {
