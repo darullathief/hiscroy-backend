@@ -66,11 +66,43 @@ class StoryController extends Controller
         try {
             $story = Story::find($request->id);
             $story->delete();
-
+            
             return response()->json([
                 'success' => true,
                 'message' => "Berhasil dihapus",
                 'data' => $story
+            ], 200);
+            
+        } catch (QueryException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => "Terjadi kesalahan",
+                'data' => $e->getMessage(),
+            ]);
+        }
+    }
+
+    public function update(Request $request) {
+        $validate = Validator::make($request->all(),[
+            'id' => 'required|integer'
+        ]);
+
+        if ($validate->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => "Terjadi kesalahan",
+                'data' => $validate->errors(),
+            ]);
+        }
+
+        $data = $request->all();
+        
+        try {
+            Story::where('id',$request->id)->update($data);
+            return response()->json([
+                'success' => true,
+                'message' => "Berhasil diupdate",
+                'data' => $data
             ], 200);
             
         } catch (QueryException $e) {
