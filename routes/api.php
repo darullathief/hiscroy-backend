@@ -17,4 +17,5 @@ Route::controller(AuthController::class)->group(function () {
 Route::controller(StoryController::class)->group(function () {
     Route::post('/story/create', 'create');
     Route::post('/story/delete', 'delete');
+    Route::post('/story/update', 'update');
 });
