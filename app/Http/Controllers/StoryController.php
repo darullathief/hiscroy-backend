@@ -114,4 +114,55 @@ class StoryController extends Controller
         }
     }
 
+    public function get_story(Request $request, $id=null) {
+        //cek apakah parameter id
+        if ($id) {
+            $story = Story::find($id);
+            if (!$story) {
+                return response()->json([
+                    'success' => false,
+                    'message' => "Data tidak ditemukan",
+                    'data' => [],
+                ],400);
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => "Berhasil",
+                'data' => $story,
+            ]);
+        }
+        else {
+            $sort_by = isset($request->sort_by) ? $request->sort_by : null;
+            $limit = isset($request->limit) ? $request->limit : 6;
+            $page = isset($request->page) ? $request->page : 1;
+            $offset = ($page - 1) * $limit;
+
+            $story = array();
+
+            if ($sort_by) {
+                $sort_field = explode(':',$request->sort_by)[0];
+                $sort_order = explode(':',$request->sort_by)[1];
+
+                $story = Story::orderBy($sort_field, $sort_order)->take($limit)->offset($offset)->get();
+            } else {
+                $story = Story::take($limit)->offset($offset)->get();
+            }
+
+            if (!$story) {
+                return response()->json([
+                    'success' => false,
+                    'message' => "Data tidak ditemukan",
+                    'data' => [],
+                ], 400);
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => "Berhasil",
+                'data' => $story,
+            ]);
+        }
+    }
+    
 }
