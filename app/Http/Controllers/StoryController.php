@@ -164,5 +164,14 @@ class StoryController extends Controller
             ]);
         }
     }
-    
+    public function get_latest_story() {
+        $story = Story::orderByDesc('created_at')->take('3')->get();
+
+        return response()->json([
+            'success' => true,
+            'message' => "Berhasil",
+            'data' => $story,
+        ]);
+    }
+
 }
