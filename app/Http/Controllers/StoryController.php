@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Story;
+use App\Models\Events;
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Validator;
@@ -35,9 +36,21 @@ class StoryController extends Controller
             $story->date_finish =   isset($request->date_finish) && !is_null($request->date_finish) ? $request->date_finish : null;
             $story->save();
 
+            if (!empty($request->events)) {
+                foreach ($request->events as $key => $val) {
+                    $event = new Events();
+                    $event->story_id = $story->id;
+                    $event->title = $val['title'];
+                    $event->content = $val['content'];
+                    $event->sequence = $key;
+                    $event->save();
+                }
+            }
+
+            $data = Story::with('events')->find($story->id);
             return response()->json([
                 'success' => true,
-                'data' => $story
+                'data' => $data
             ], 200);
 
         } catch (QueryException $e) {
@@ -172,6 +185,33 @@ class StoryController extends Controller
             'message' => "Berhasil",
             'data' => $story,
         ]);
+    }
+
+    public function get_popular_story() {
+        // Batasi 3 story
+    }
+
+    public function find_story() {
+        //Cari berdasarkan title
+    }
+
+    public function finish_read(Request $request) {
+
+    }
+    public function has_read(Request $request) {
+
+    }
+
+    private function add_to_history() {
+
+    }
+
+    private function add_user_point() {
+
+    }
+
+    public function add_to_series() {
+
     }
 
 }

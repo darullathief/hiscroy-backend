@@ -18,4 +18,6 @@ Route::controller(StoryController::class)->group(function () {
     Route::post('/story/create', 'create');
     Route::post('/story/delete', 'delete');
     Route::post('/story/update', 'update');
+    Route::get('/story/get/{id?}', 'get_story');
+    Route::get('/story/get_latest', 'get_latest_story');
 });

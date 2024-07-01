@@ -52,6 +52,7 @@ return new class extends Migration
         Schema::create('events', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('story_id');
+            $table->string('title');
             $table->text('content');
             $table->integer('sequence');
             $table->foreign('story_id')->references('id')->on('story');
