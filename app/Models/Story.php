@@ -27,7 +27,7 @@ class Story extends Model
     
     public function series() : BelongsToMany
     {
-        return $this->belongsToMany(Series::class, 'series_user', 'story_id', 'series_id');
+        return $this->belongsToMany(Series::class, 'series_story', 'story_id', 'series_id');
     }
 
     public function events(): HasMany
